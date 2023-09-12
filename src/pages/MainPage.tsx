@@ -1,4 +1,4 @@
-import CombinedChart from '../components/CombinedChart';
+import CombinedChart from '../components/Chart/CombinedChart';
 import mockData from '../data/mock_data.json';
 
 const MainPage = () => {
