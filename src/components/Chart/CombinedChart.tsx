@@ -11,6 +11,7 @@ import {
   ResponsiveContainer,
   Cell,
 } from 'recharts';
+import styled from 'styled-components';
 
 import CustomTooltip from './CustomTooltip';
 
@@ -23,9 +24,11 @@ type CombinedChartDataType = {
 
 interface CombinedChartProps {
   data: CombinedChartDataType[];
+  width?: string;
+  heigth?: string;
 }
 
-const CombinedChart = ({ data }: CombinedChartProps) => {
+const CombinedChart = ({ data, width = '100%', heigth = '500px' }: CombinedChartProps) => {
   const [filteredId, setFilteredId] = useState('');
   const idSet = new Set(data.map((item) => item.id));
   const idArray = Array.from(idSet);
@@ -48,21 +51,27 @@ const CombinedChart = ({ data }: CombinedChartProps) => {
   };
 
   return (
-    <div>
+    <ChartWrapper $heigth={heigth} $width={width}>
       <div>
+        <span>필터링 : </span>
         {idArray.map((id) => (
-          <button key={id} type="button" onClick={() => filterData(id)}>
+          <FilterButton
+            key={id}
+            $isSelected={id === filteredId}
+            type="button"
+            onClick={() => filterData(id)}
+          >
             {id}
-          </button>
+          </FilterButton>
         ))}
       </div>
-      <ResponsiveContainer height="100%" minHeight="300px" width="100%">
+      <ResponsiveContainer height="100%" width="100%">
         <ComposedChart
           data={data}
           height={400}
           margin={{
             top: 20,
-            right: 80,
+            right: 20,
             bottom: 20,
             left: 20,
           }}
@@ -94,25 +103,46 @@ const CombinedChart = ({ data }: CombinedChartProps) => {
           <Bar
             barSize={20}
             dataKey="value_bar"
-            fill="#85df89"
+            fill="#ea971c"
             yAxisId="bar"
             onClick={(e) => filterData(e.id)}
           >
             {data.map((item) => (
-              <Cell key={item.id} fill={item.id === filteredId ? '#3c8a40' : '#85df89'} />
+              <Cell key={item.id} fill={item.id === filteredId ? '#945900' : '#ea971c'} />
             ))}
           </Bar>
           <Area
             dataKey="value_area"
-            fill="#5e31d1"
-            stroke="#5e31d1"
+            fill="#0029f4"
+            stroke="#0029f4"
             type="monotone"
             yAxisId="area"
           />
         </ComposedChart>
       </ResponsiveContainer>
-    </div>
+    </ChartWrapper>
   );
 };
 
 export default CombinedChart;
+
+const ChartWrapper = styled.div<{ $width: string; $heigth: string }>`
+  box-sizing: border-box;
+  width: ${({ $width }) => $width};
+  height: ${({ $heigth }) => $heigth};
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+`;
+
+const FilterButton = styled.button<{ $isSelected: boolean }>`
+  margin-right: 10px;
+  padding: 4px 8px;
+  border: 1px solid #666;
+  border-radius: 4px;
+  font-weight: bold;
+  background-color: ${({ $isSelected }) => ($isSelected ? '#666' : '#fff')};
+  color: ${({ $isSelected }) => ($isSelected ? '#fff' : '#666')};
+`;
