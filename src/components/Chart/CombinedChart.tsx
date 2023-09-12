@@ -10,6 +10,8 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
+import CustomTooltip from './CustomTooltip';
+
 type CombinedChartDataType = {
   id: string;
   time: string;
@@ -47,7 +49,7 @@ const CombinedChart = ({ data }: CombinedChartProps) => {
         <CartesianGrid stroke="#f5f5f5" />
         <XAxis
           dataKey="time"
-          label={{ value: '시각', position: 'bottom', offset: -5 }}
+          label={{ value: 'Time', position: 'bottom', offset: -5 }}
           tickFormatter={formatDateStringToTime}
         />
         <YAxis
@@ -65,7 +67,7 @@ const CombinedChart = ({ data }: CombinedChartProps) => {
           orientation="right"
           yAxisId="area"
         />
-        <Tooltip />
+        <Tooltip content={CustomTooltip} />
         <Legend height={36} verticalAlign="top" />
         <Bar barSize={20} dataKey="value_bar" fill="#85df89" yAxisId="bar" />
         <Area dataKey="value_area" fill="#5e31d1" stroke="#5e31d1" type="monotone" yAxisId="area" />
