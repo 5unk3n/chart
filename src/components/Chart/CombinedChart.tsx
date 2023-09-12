@@ -27,6 +27,8 @@ interface CombinedChartProps {
 
 const CombinedChart = ({ data }: CombinedChartProps) => {
   const [filteredId, setFilteredId] = useState('');
+  const idSet = new Set(data.map((item) => item.id));
+  const idArray = Array.from(idSet);
 
   const filterData = (id: string) => {
     if (id === filteredId) {
@@ -46,6 +48,14 @@ const CombinedChart = ({ data }: CombinedChartProps) => {
   };
 
   return (
+    <div>
+      <div>
+        {idArray.map((id) => (
+          <button key={id} type="button" onClick={() => filterData(id)}>
+            {id}
+          </button>
+        ))}
+      </div>
       <ResponsiveContainer height="100%" minHeight="300px" width="100%">
         <ComposedChart
           data={data}
@@ -101,6 +111,7 @@ const CombinedChart = ({ data }: CombinedChartProps) => {
           />
         </ComposedChart>
       </ResponsiveContainer>
+    </div>
   );
 };
 
